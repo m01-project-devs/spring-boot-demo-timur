@@ -89,8 +89,9 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>10.17.0</version>
+            <version>10.20.0</version>
         </dependency>
+
 
         <dependency>
             <groupId>com.h2database</groupId>
@@ -123,6 +124,7 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+
 
 	</dependencies>
 

@@ -19,6 +19,6 @@ public class HelloServiceControllerTest
     void testGetGreeting_withValidName()
     {
         String greeting = helloService.getGreeting("Timur");
-        assertEquals("Hello Timur", greeting);
+        assertEquals("Hello Timur!", greeting);
     }
 }

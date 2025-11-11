@@ -3,17 +3,20 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "user")
+@Table(name = "user") // recommended: plural
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User
-{
+public class User {
+
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -22,5 +25,6 @@ public class User
     private String password;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
 }

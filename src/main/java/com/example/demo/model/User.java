@@ -23,5 +23,4 @@ public class User
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private java.time.LocalDateTime createdAt;
-
 }

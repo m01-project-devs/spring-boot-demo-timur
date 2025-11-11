@@ -19,7 +19,7 @@ public class HelloController
         this.helloService = helloService;
     }
     @GetMapping("/hello")
-    public String sayHello(@RequestParam String name)
+    public String sayHello(@RequestParam(required = false) String name)
     {
 
         return helloService.getGreeting(name);

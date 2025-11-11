@@ -8,10 +8,11 @@ public class HelloService
 {
     public String getGreeting(String name)
     {
-        if(name == null || name.trim().isEmpty())
+        if(name != null && !name.isBlank())
         {
-            return "Hello World!";
+            return "Hello " + name.trim();
         }
-        return "Hello " + name.trim();
+        else
+            return "Hello World!";
     }
 }

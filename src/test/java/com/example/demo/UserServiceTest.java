@@ -3,17 +3,19 @@ package com.example.demo;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
     @Mock
@@ -22,17 +24,11 @@ class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService; // <-- concrete class
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this); // initialize mocks
-    }
 
     @Test
     void testCreateUser() {
         User user = new User();
-        user.setId(1);
         user.setEmail("test@example.com");
-        user.setPassword("password");
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -46,9 +42,7 @@ class UserServiceTest {
     @Test
     void testGetUserById() {
         User user = new User();
-        user.setId(1);
         user.setEmail("test@example.com");
-        user.setPassword("password");
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 

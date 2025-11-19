@@ -3,10 +3,12 @@ package com.example.demo.service.impl;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
 
 
@@ -24,8 +26,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(Integer id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(Math.toIntExact(id));
     }
 
     @Override

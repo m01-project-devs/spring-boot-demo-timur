@@ -46,8 +46,8 @@ class UserControllerTest {
 
     @Test
     void createUser_validRequest_returns201AndLocation() throws Exception {
-        UserRequestDto requestDto = new UserRequestDto("Ahmet", "ahmet@test.com");
-        User savedUser = createUser(1L, "Ahmet", "ahmet@test.com");
+        UserRequestDto requestDto = new UserRequestDto("Amirbek", "amirbek@test.com","123456");
+        User savedUser = createUser(1L, "Amirbek", "amirbek@test.com");
 
         when(userService.createUser(any(User.class))).thenReturn(savedUser);
 
@@ -55,15 +55,15 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/users/email/ahmet@test.com"))
+                .andExpect(header().string("Location", "/api/users/email/amirbek@test.com"))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Ahmet"))
-                .andExpect(jsonPath("$.email").value("ahmet@test.com"));
+                .andExpect(jsonPath("$.name").value("Amirbek"))
+                .andExpect(jsonPath("$.email").value("amirbek@test.com"));
     }
 
     @Test
     void createUser_invalidEmail_returns400() throws Exception {
-        UserRequestDto invalid = new UserRequestDto("Ahmet", "wrong-email");
+        UserRequestDto invalid = new UserRequestDto("Amirbek", "wrong-email", "123456");
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -92,17 +92,17 @@ class UserControllerTest {
 
     @Test
     void updateUserByEmail_validData_returns200() throws Exception {
-        UserRequestDto dto = new UserRequestDto("Mehmet", "mehmet.new@test.com");
-        User updatedUser = createUser(1L, "Mehmet", "mehmet.new@test.com");
+        UserRequestDto dto = new UserRequestDto("Alibek", "alibek@test.com","123456");
+        User updatedUser = createUser(1L, "Alibek", "alibek@test.com");
 
         when(userService.updateUser(any(User.class))).thenReturn(updatedUser);
 
-        mockMvc.perform(put("/api/users/email/mehmet@test.com")
+        mockMvc.perform(put("/api/users/email/alibek@test.com")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Mehmet"))
-                .andExpect(jsonPath("$.email").value("mehmet.new@test.com"));
+                .andExpect(jsonPath("$.name").value("Alibek"))
+                .andExpect(jsonPath("$.email").value("alibek@test.com"));
     }
 
     @Test
@@ -119,12 +119,56 @@ class UserControllerTest {
     void getAllUsers_returnsList() throws Exception {
         when(userService.getAllUsers()).thenReturn(List.of(
                 createUser(1L, "Ali", "ali@test.com"),
-                createUser(2L, "Ayse", "ayse@test.com")
+                createUser(2L, "Anna", "ann@test.com")
         ));
 
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].name").value("Ali"));
+    }
+    @Test
+    void createUser_invalidEmail_returns404() throws Exception
+    {
+        String json = """
+                "name": "Ali",
+                "email": "bademail",
+                "password": "123"
+                """;
+        mockMvc.perform(post("/api/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isBadRequest());
+
+    }
+    @Test
+    void createUser_shortPassword_returns400() throws Exception {
+        String json = """
+        {
+            "name": "Ali",
+            "email": "ali@test.com",
+            "password": "123"
+        }
+        """;
+
+        mockMvc.perform(post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void createUser_missingPassword_returns400() throws Exception {
+        String json = """
+        {
+            "name": "Ali",
+            "email": "ali@test.com"
+        }
+        """;
+
+        mockMvc.perform(post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest());
     }
 }

@@ -56,9 +56,8 @@ public class UserController {
             @Valid @RequestBody UserRequestDto dto) {
 
         User user = new User();
-        user.setEmail(email);  // ищем по старому email
+        user.setEmail(email);
         user.setName(dto.getName());
-        // user.setEmail(dto.getEmail()); // если хочешь разрешить смену email
 
         User updated = userService.updateUser(user);
         return ResponseEntity.ok(new UserResponseDto(updated.getId(), updated.getName(), updated.getEmail()));
